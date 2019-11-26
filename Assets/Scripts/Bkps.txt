@@ -1,0 +1,108 @@
+private CharacterConteiner ManageBattle() {
+        GameObject[] playerTeam;
+        GameObject[] enemyTeam;
+        GameObject[] characters;
+        int index;
+        int count = 0;
+
+        playerTeam = GameObject.FindGameObjectsWithTag( "Player" );
+        enemyTeam = GameObject.FindGameObjectsWithTag( "Enemy" );
+
+        for ( int i = 0; i < playerTeam.Length; i++ ) {
+            if( playerTeam[i].GetComponent<CharacterDisplay>().character.alreadyAttacked ) {
+                count++;
+            }
+        }
+        
+        if( count == playerTeam.Length ) {
+            turn++;
+            EnemyAttack();
+            for ( int i = 0; i < playerTeam.Length; i++ ) {
+                playerTeam[i].GetComponent<CharacterDisplay>().character.alreadyAttacked = false;
+            }
+        }
+
+        do {
+            index = Random.Range( 0, playerTeam.Length );
+        } while( playerTeam[index].GetComponent<CharacterDisplay>().character.alreadyAttacked );
+        
+
+        GameObject selectedPlayer = playerTeam[index];
+
+        player = selectedPlayer.GetComponent<CharacterDisplay>().character;
+
+        print( player.charClass + " Selected" );
+        player.active = true;
+
+        print( player.active );
+
+        return player;
+    }
+
+
+	for ( int i = 0; i < turnList.Count; i++ ) {
+            print( turnList[i].name + " Speed: " + turnList[i].GetComponent<CharacterDisplay>().character.charSpeed);
+        }
+
+
+
+
+
+
+
+
+
+		-----------
+
+
+
+
+
+
+
+		int index = 1;
+        bool shmalaia = true;
+        do {
+            if( turnList[index].GetComponent<CharacterDisplay>().CompareTag("Player") && !turnList[index].GetComponent<CharacterDisplay>().character.alreadyAttacked ) {
+                state = State.WaitingForPlayer;
+                player = turnList[index].GetComponent<CharacterDisplay>().character;
+                player.active = true;              
+
+                if( turnList[index].GetComponent<CharacterDisplay>().character.alreadyAttacked ) {
+                    count++; 
+                }
+
+            } else {
+                index++; 
+            }
+
+            if( count == playerTeam.Length ) {
+                turn++;
+                EnemyAttack();
+                for( int j = 0; j < playerTeam.Length; j++ ) {
+                    playerTeam[j].GetComponent<CharacterDisplay>().character.alreadyAttacked = false;
+                }
+                shmalaia = false;
+
+            }
+
+        } while( shmalaia );
+
+
+		=======================
+
+
+		foreach( var action in turnList ) {
+            if( action.GetComponent<CharacterDisplay>().CompareTag("Player") && !action.GetComponent<CharacterDisplay>().character.alreadyAttacked ) {
+                player = action.GetComponent<CharacterDisplay>().character;
+                player.active = true;
+                
+                print( "Seclected: " + player + " Count: " + count +  " Turn List: "  + turnList.Count );
+                
+                return player;
+            }
+            if( action.GetComponent<CharacterDisplay>().CompareTag("Enemy") && !action.GetComponent<CharacterDisplay>().character.alreadyAttacked ) {
+                enemy = action.GetComponent<CharacterDisplay>().character;
+                EnemyAction( enemy );
+            }
+        }
